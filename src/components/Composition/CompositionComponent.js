@@ -16,7 +16,7 @@ const CompositionComponent = ({ composition, consentReqId, resources }) => {
       return ref.targetResource.name[0].text;
     }
     const getAuthors = () => composition.author && composition.author.map((author) => author.display || getAuthor(author));
-    const getDate =() => formatDateString(composition.date, true);
+    const getDate =() => formatDateString(composition.encounter?.targetResource?.period?.start, true);
 
     const independentDataOfType = (resourceType) => {
         return(
