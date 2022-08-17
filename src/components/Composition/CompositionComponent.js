@@ -13,7 +13,9 @@ const CompositionComponent = ({ composition, consentReqId, resources }) => {
     const getAuthor = (ref) => {
       if (!ref.targetResource) return undefined;
       if (!ref.targetResource.name) return undefined;
-      return ref.targetResource.name[0].text;
+      const givenName = ref.targetResource.name[0].given.join(" ");
+      if (!ref.targetResource.name[0].family) return givenName;
+      return givenName.concat(" ").concat(ref.targetResource.name[0].family);
     }
     const getAuthors = () => composition.author && composition.author.map((author) => author.display || getAuthor(author));
     const getDate =() => formatDateString(composition.encounter?.targetResource?.period?.start, true);
