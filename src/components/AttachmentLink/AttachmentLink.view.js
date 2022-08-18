@@ -1,6 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import axios from 'axios';
+import Config from "../../Config";
 
 const AttachmentLink = ({ consentReqId, attachmentPath, linkTitle }) => {
   const openAttachment = async e => {
@@ -10,7 +11,7 @@ const AttachmentLink = ({ consentReqId, attachmentPath, linkTitle }) => {
       headers:{ Authorization: localStorage.getItem('auth-token') },
       method: 'get',
       url: `/health-information/fetch/${consentReqId}${attachmentPath}`,
-      baseURL: BACKEND_BASE_URL + BACKEND_API_PATH,
+      baseURL: Config.BACKEND_BASE_URL + Config.BACKEND_API_PATH,
       responseType: 'blob'
     });
 
