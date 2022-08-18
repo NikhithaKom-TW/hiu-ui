@@ -18,7 +18,7 @@ const HealthInfoNav = ({ dates, selectedDate, setSelectedDate }) => {
   return (
     <HealthInfoNavStyles>
       <div className="health-info-nav">
-        <span className="date-navigator-heading">View by recorded date</span>
+        <span className="date-navigator-heading">View by visit date</span>
         <div className="date-navigator">
           <IconButton
             disabled={

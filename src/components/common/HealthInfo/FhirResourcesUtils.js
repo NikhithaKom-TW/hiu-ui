@@ -39,7 +39,7 @@ const getFormattedDateString = function (dateString) {
     return undefined;
   }
   const dt = new Date(dateString);
-  return `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
+  return `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()} ${dt.getHours()}:${dt.getMinutes()}`;
 };
 
 const identifyFirstParent = function (resource) {
