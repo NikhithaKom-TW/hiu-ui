@@ -11,6 +11,7 @@ import valueForObs from './ObsValueHandlers';
 import TableStyles from '../common/Styles/Table.style';
 import { formatDateString, getConceptDisplay } from '../common/HealthInfo/FhirResourcesUtils';
 import {getConceptText} from "./ObservationTableHelperFunctions";
+import AdditionalNotes from "../AdditionalNotes";
 
 export const Components = ({ components }) => (components
   ? components.map((component) => (
@@ -37,7 +38,7 @@ const ObservationTable = ({ data }) => {
         <Table className="table" aria-label="simple table">
           <TableHead>
             <TableRow className="table-head">
-              <TableCell className="header" colSpan={4}>
+              <TableCell className="header" colSpan={5}>
                 Observation:
               </TableCell>
             </TableRow>
@@ -46,6 +47,7 @@ const ObservationTable = ({ data }) => {
               <TableCell align="left">Observation</TableCell>
               <TableCell align="left">Value</TableCell>
               <TableCell align="left">Status and Interpretation</TableCell>
+              <TableCell align="left">Additional Notes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,6 +71,9 @@ const ObservationTable = ({ data }) => {
                 <TableCell className="table-cell">
                   <div>{entry.status}</div>
                   {extractInterpretation(entry)}
+                </TableCell>
+                <TableCell className="table-cell">
+                  <AdditionalNotes resource={entry} />
                 </TableCell>
               </TableRow>
             ))}
