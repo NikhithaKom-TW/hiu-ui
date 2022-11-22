@@ -3,8 +3,9 @@ name: Master build
 on:
   push:
     branches:
-      - master
-      - 'release-*'
+      - BAH-2505
+      # - master
+      # - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
@@ -19,17 +20,17 @@ jobs:
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
           ./setArtifactVersion.sh
           rm setArtifactVersion.sh
-      - name: NCG Docker Registry
-        env:
-          DOCKER_REGISTRY_URL: docker.io
-          NCG_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: docker login -u $NCG_USERNAME -p $NCG_PASSWORD $DOCKER_REGISTRY_URL
+      # - name: NCG Docker Registry
+      #   env:
+      #     DOCKER_REGISTRY_URL: docker.io
+      #     NCG_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #   run: docker login -u $NCG_USERNAME -p $NCG_PASSWORD $DOCKER_REGISTRY_URL
       - name: Build docker image for NCG
         env:
           CONTAINER_REPO_NAME: hiu-ui
-          NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: docker build -f package/docker/Dockerfile -t $NCG_USERNAME/$CONTAINER_REPO_NAME:$ARTIFACT_VERSION .
+          # NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker build -f package/docker/Dockerfile -t $CONTAINER_REPO_NAME:$ARTIFACT_VERSION --platform=linux/arm64 --platform=linux/amd64 .
       - name: Push Docker image to NCG Registry
         env:
           CONTAINER_REPO_NAME: hiu-ui
@@ -79,5 +80,3 @@ jobs:
           git add .
           git commit -m "Release of hiu-ui-${{ env.ARTIFACT_VERSION }}"
           git push 'https://${{ secrets.BAHMNI_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmniindiadistro/helm-charts.git' gh-pages
-
-
