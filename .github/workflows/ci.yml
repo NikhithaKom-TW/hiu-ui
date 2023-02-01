@@ -3,9 +3,8 @@ name: Master build
 on:
   push:
     branches:
-      - BAH-2505
-      # - master
-      # - 'release-*'
+      - master
+      - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
@@ -20,12 +19,12 @@ jobs:
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
           ./setArtifactVersion.sh
           rm setArtifactVersion.sh
-      # - name: NCG Docker Registry
-      #   env:
-      #     DOCKER_REGISTRY_URL: docker.io
-      #     NCG_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #   run: docker login -u $NCG_USERNAME -p $NCG_PASSWORD $DOCKER_REGISTRY_URL
+      - name: NCG Docker Registry
+        env:
+          DOCKER_REGISTRY_URL: docker.io
+          NCG_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker login -u $NCG_USERNAME -p $NCG_PASSWORD $DOCKER_REGISTRY_URL
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -34,7 +33,6 @@ jobs:
         env:
           CONTAINER_REPO_NAME: hiu-ui
           NCG_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        # run: docker build -f package/docker/Dockerfile -t $CONTAINER_REPO_NAME:$ARTIFACT_VERSION --platform=linux/arm64 --platform=linux/amd64 .
         run: docker buildx build -f package/docker/Dockerfile -t $CONTAINER_REPO_NAME:$ARTIFACT_VERSION --platform linux/amd64,linux/arm64 .
       - name: Push Docker image to NCG Registry
         env:
